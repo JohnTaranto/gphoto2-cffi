@@ -698,7 +698,7 @@ class Camera(object):
         return list_dirs_recursively(self.filesystem)
 
     @exit_after
-    def capture(self, to_camera_storage=False):
+    def capture(self, to_camera_storage=False, capture_target=None):
         """ Capture an image.
 
         Some cameras (mostly Canon and Nikon) support capturing to internal
@@ -709,15 +709,21 @@ class Camera(object):
 
         :param to_camera_storage:   Save image to the camera's internal storage
         :type to_camera_storage:    bool
+        :param capture_target: Specify the target location ('sdram', 'card', or 'card+sdram')
+        :type capture_target: str
         :return:    A :py:class:`File` if `to_camera_storage` was `True`,
                     otherwise the captured image as a bytestring.
         :rtype:     :py:class:`File` or bytes
         """
         target = self.config['settings']['capturetarget']
-        if to_camera_storage and target.value != "Memory card":
-            target.set("Memory card")
-        elif not to_camera_storage and target.value != "Internal RAM":
-            target.set("Internal RAM")
+        if capture_target:
+            target.set(capture_target)
+        else:
+            if to_camera_storage and target.value != "Memory card":
+                target.set("Memory card")
+            elif not to_camera_storage and target.value != "Internal RAM":
+                target.set("Internal RAM")
+
         lib.gp_camera_trigger_capture(self._cam, self._ctx)
 
         fobj = self._wait_for_event(event_type=lib.GP_EVENT_FILE_ADDED)
