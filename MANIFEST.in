@@ -1,1 +1,1 @@
-include gphoto2cffi/gphoto2.cdef
+include jtgphoto2cffi/gphoto2.cdef
