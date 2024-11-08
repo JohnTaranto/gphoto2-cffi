@@ -38,7 +38,7 @@ setup(
     url="http://github.com/jbaiter/gphoto2-cffi.git",
     author_email="johannes.baiter@gmail.com",
     license='LGPLv3',
-    packages=['jtgphoto2cffi'],
+    packages=['gphoto2cffi'],
     include_package_data=True,
     setup_requires=['cffi >= 1.4'],
     cffi_modules=['gphoto2cffi/backend_build.py:ffi'],
